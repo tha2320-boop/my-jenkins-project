@@ -1,19 +1,38 @@
 pipeline {
     agent any
+
     stages {
-        stage('Fetch Code') {
+        stage('Checkout') {
             steps {
-                echo 'Hello from auto build(:...'
+                // שלב זה מושך את הקוד מה-Git
+                checkout scm [cite: 76]
             }
         }
-        stage('Build') {
+
+        stage('Build Docker Image') {
             steps {
-                echo 'Building our amazing app...'
+                script {
+                    // בניית האימג' של האפליקציה לפי ה-Dockerfile שבתיקייה
+                    sh 'docker build -t my-python-app .' [cite: 14]
+                }
             }
         }
-        stage('Test') {
+
+        stage('Run Unit Tests') {
             steps {
-                echo 'Running tests successfully!'
+                script {
+                    // הרצת הטסטים בתוך קונטיינר זמני
+                    sh 'docker run --rm my-python-app pytest tests/unit' [cite: 13]
+                }
+            }
+        }
+        
+        stage('Run Integration Tests') {
+            steps {
+                script {
+                    // הרצת טסטים של אינטגרציה
+                    sh 'docker run --rm my-python-app pytest tests/integration'
+                }
             }
         }
     }

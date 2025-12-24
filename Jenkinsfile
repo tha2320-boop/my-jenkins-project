@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Fetch Code') {
             steps {
-                echo 'Pulling code from GitHub...'
+                echo 'Hello from auto build(:...'
             }
         }
         stage('Build') {
